@@ -11,7 +11,7 @@
 <body>
    <h3>속성 관련 태그 : set, remove, out 태그</h3>
    <%-- set 태그 : session.setAttribute("test","Hello JSTL"); 과 같은거. scope 지정 안하면 default=pageContext --%>
-   <c:set var="test" value="${'Hello JSTL' }" scope="session" /> <!-- <name>: 태그 이름, <rtexprvalue>:표현식 사용가능? <required>:꼭 써야함? c.tld에서 확인 가능. -->
+   <c:set var="test" value="${'Hello JSTL' }" scope="session" /> <!-- <name>: 태그 이름, <rtexprvalue>:표현식 사용가능? <required>:꼭 써야함? c.tld(tag library descriptor)에서 확인 가능. -->
    <% session.setAttribute("test","<div stye='color:blue'>Hello JSTL</div>"); %>
    test 속성 : ${sessionScope.test }<br>
    <%-- out 태그 : session.getAttribute("test"); EL보다 보안에 안전함. --%>
