@@ -91,7 +91,7 @@
          <h4>forEach 태그의 varStatus 속성 연습</h4>
       </c:if>
       ${stat.index } : ${i } , ${list[stat.index]} &nbsp;&nbsp;&nbsp;
-      ${stat.count } : ${i } , ${list[stat.count-1] } <!-- count : 1부터 시작. 개수 or 순서를 의미. index==count-1 -->
+      ${stat.count } : ${i } , ${list[stat.count-1] } <!-- count : 1부터 시작. 반복되는 횟수를 의미. index==count-1 -->
       <br> <!-- stat.index = 배열의 index값을 의미함. -->
    </c:forEach>
 </body>
