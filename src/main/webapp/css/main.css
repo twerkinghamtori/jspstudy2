@@ -1,0 +1,26 @@
+@charset "UTF-8";
+table {
+	width:100%;
+	border-collapse:collapse;
+}
+th,td {
+	border:2px solid black;
+	text-align : center;
+	padding : 5px;
+}
+th {
+	background-color : green;
+	color : white;
+	font-weight : bold;	
+}
+td {
+	background-color : ivory;
+}
+caption {
+	color : #111111;
+	font-size : 20px;
+	background-color : #FFFFFF;
+}
+input[type=text], input[type=password], textarea {
+	width:90%;
+}
