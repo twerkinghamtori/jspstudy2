@@ -18,8 +18,9 @@
 <title>나의 정보 조회</title>
 </head>
 <body> 
-   <table>
-     <caption>나의 정보 보기</caption>
+<div class="container">
+	<h2 id="center">회원 상세 정보</h2>
+   <table class="table table-hover"> <!-- 마우스 올렸을 때 색 변경 -->
      <tr>
         <td rowspan="6" width="30%">
            <img src="picture/${mem.picture }" width="200" height="210">
@@ -49,14 +50,15 @@
      </tr>
      
      <tr>
-        <td colspan="2">
+        <td colspan="2" id="center">
            <a href="updateForm?id=${mem.id }">수정</a>
-           <c:if test="${param.id=='admin' }">
+           <c:if test="${param.id !='admin' }">
               <a href="deleteForm?id=${mem.id }">탈퇴</a>
            </c:if>
         </td>
      </tr>
      
    </table>
+</div>
 </body>
 </html>
