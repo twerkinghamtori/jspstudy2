@@ -10,10 +10,16 @@
 <meta charset="UTF-8">
 <title>회원목록</title>
 <script>
- function checkAll(checkall) {
+ /* function checkAll(checkall) {
 	 const checkboxes = document.getElementsByName("check");
 	 checkboxes.forEach((checkbox) => { checkbox.checked = checkAll.checked;})
- }
+ } */
+ 
+ $(function(){
+	$('#toggle').click(function(){
+		$('.chk').prop('checked', $(this).is(':checked'))
+	})
+ })
 </script>
 </head>
 <body>
@@ -27,7 +33,7 @@
       		<th>성별</th>
       		<th>전화번호</th>
       		<th>&nbsp;</th>
-      		<th><input type="checkbox" name="check" value="checkall" onclick="checkAll(this)"></th>
+      		<th><input type="checkbox" name="check" value="checkall" id="toggle"></th>
    		</tr>
    		<c:forEach var="m" items="${list }">
    			<tr>
@@ -43,7 +49,7 @@
        			 </c:if>
       			</td>
       			<td>
-      				<input type="checkbox" value="1" name="check">
+      				<input type="checkbox" class="chk" value="1" name="check">
       			</td>
    			</tr>
    		</c:forEach>
