@@ -142,8 +142,9 @@ public class MemberDao {
     		 rs = pstmt.executeQuery();
     		 if(rs.next()) {
     			 String id = rs.getString("id");
-        		 return id;
-    		 }    				 
+//    			 id=  "**" + id.substring(2); 
+    			 return id;
+    		 }    		 
     	 } catch(SQLException e) {
     		 e.printStackTrace();
     	 } finally {

@@ -28,10 +28,16 @@
     	let op = "width=500, height=500, left=50, top=150";
     	open("pictureForm", "", op); //window.open("URL","팝업이름","팝업 옵션");
     }
-    function win_open(path) {
-    	let id = f.id.value;
-    	let op = "width=500, height=350, left=50, top=150";
-    	open(path+"?id="+id, "", op);
+    function win_open(path) {    	
+    	let id = document.f.id.value;
+    	if(id == "") {
+    		alert("아이디를 입력하세요.");
+    		f.id.focus();
+    		return;
+    	} else {
+    		let op = "width=500, height=200, left=50, top=150";
+        	open(path+"?id="+id, "", op);
+    	}    	
     }
 </script>
 </head>
@@ -42,14 +48,17 @@
       <h2 id="center">회원가입</h2> <!-- center css는 kiclayout.jsp에 있음. text-align:center -->
       
       <div class="row"> <!-- 1row = 12 cols -->      
-         <div class="col-3 bg-light">
-            <img src="" width="100" height="120" id="pic">
+         <div class="col-3 bg-light" id="center">
+            <img src="" width="95%" height="200" id="pic"><br>
+            <font size="1"><a href="javascript:win_upload()">사진등록</a></font>
          </div>
          
          <div class="col-9">
             <div class="form-group">
                <label for="id">아이디 : </label>
+               <button type="button" class="btn btn-dark float-right" onclick="win_open('idchk')">아이디 중복 확인</button><br>     
                <input type="text" class="form-control" name="id" id="id">
+                         
                
                <label for="pwd">비밀번호 : </label>
                <input type="password" class="form-control" name="pass" id="pwd">

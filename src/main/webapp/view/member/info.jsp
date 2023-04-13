@@ -23,7 +23,7 @@
    <table class="table table-hover"> <!-- 마우스 올렸을 때 색 변경 -->
      <tr>
         <td rowspan="6" width="30%">
-           <img src="picture/${mem.picture }" width="200" height="210">
+           <img src="/jspstudy2/picture/${mem.picture }" width="200" height="210">
         </td>
         <th width="20%">아이디</th>
         <td>${mem.id }</td>

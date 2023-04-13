@@ -34,7 +34,7 @@
      <table class="table table-hover">
         <tr>
            <td rowspan="4" valign="bottom">
-              <img src="picture/${mem.picture }" width="100" height="120" id="pic"><br>
+              <img src="/jspstudy2/picture/${mem.picture }" width="200" height="200" id="pic"><br>
               <font size="1"><a href="javascript:win_upload()">사진수정</a></font>
            </td>
            <th>아이디</th>
