@@ -15,11 +15,21 @@
 	 checkboxes.forEach((checkbox) => { checkbox.checked = checkAll.checked;})
  } */
  
- $(function(){
-	$('#toggle').click(function(){
-		$('.chk').prop('checked', $(this).is(':checked'))
-	})
- })
+ document.addEventListener('DOMContentLoaded',function(){
+     const toggle = document.querySelector('#toggle');
+
+     toggle.addEventListener('click',function(){
+       const chkList = document.querySelectorAll('.chk');
+
+       for (const chk of chkList) {
+         if(toggle.checked){
+           chk.checked = true;
+         }else{
+           chk.checked = false;
+         }
+       }
+     });
+   });
 </script>
 </head>
 <body>

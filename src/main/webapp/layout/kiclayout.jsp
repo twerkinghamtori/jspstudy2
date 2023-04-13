@@ -33,7 +33,7 @@
 	<nav class="navbar navbar-expand-sm bg-light navbar-light">
 		<!-- Brand -->
 		<a class="navbar-brand" href="#">
-		<img src="${path}/image/logo.png" width="80%"></a>
+		<img src="${path}/image/dochi.jpg" width="25%"></a>
 
 		<!-- Links -->
 		<ul class="navbar-nav ">
