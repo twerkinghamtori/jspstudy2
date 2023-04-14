@@ -26,7 +26,7 @@
         	     opener.location.href="loginForm";
         	     self.close();
         	     session.invalidate();        	     
-        	   </script>
+        	</script>
     	</c:when>
     	
     	<c:when test="${! able }">

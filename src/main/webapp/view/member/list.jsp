@@ -35,6 +35,7 @@
 <body>
 <div class="container">
 	<h2 id="center">회원목록</h2>
+	<form action="mailForm" name="f" method="post">
 	<table class="table table-hover">
    		<tr>
       		<th>아이디</th>
@@ -43,7 +44,7 @@
       		<th>성별</th>
       		<th>전화번호</th>
       		<th>&nbsp;</th>
-      		<th><input type="checkbox" name="check" value="checkall" id="toggle"></th>
+      		<th><input type="checkbox" name="checkall" value="checkall" id="toggle"></th>
    		</tr>
    		<c:forEach var="m" items="${list }">
    			<tr>
@@ -59,11 +60,17 @@
        			 </c:if>
       			</td>
       			<td>
-      				<input type="checkbox" class="chk" value="1" name="check">
+      				<input type="checkbox" name="check" value="${m.id }" class="chk" >
       			</td>
    			</tr>
    		</c:forEach>
+   		<tr>
+   		   <td colspan="7" id="center">
+   		       <button type="submit" class="btn btn-dark" >메일 보내기</button>
+   		   </td>
+   		</tr>   		
 	</table>
+	</form>
 </div>
 </body>
 </html>

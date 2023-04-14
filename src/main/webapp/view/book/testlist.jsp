@@ -9,24 +9,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>방명록 조회</title>
 <link rel="stylesheet" href="../../css/main.css" >
 </head>
 <body>
-<table>
-   <caption>방명록</caption>
-   <tr>
-      <th>작성자</th>
-      <th>제목</th>
-      <th>내용</th>
-   </tr>
-   <c:forEach var="b" items="${list }">
-   <tr>
-      <td>${b.writer }</td>
-      <td>${b.title }</td>
-      <td>${b.content }</td>
-   </tr>
-   </c:forEach>
-</table>
+   <h2 class="w3-center">방명록 조회하기</h2>
+   <div class="w3-responsive">
+   		<table class="w3-table-all">
+   			<tr class="w3-grey">
+      			<th>작성자</th>
+      			<th>제목</th>
+      			<th>내용</th>
+   			</tr>
+   			<c:forEach var="b" items="${list }">
+   			<tr>
+      			<td>${b.writer }</td>
+     			<td>${b.title }</td>
+      			<td>${b.content }</td>
+   			</tr>
+  			 </c:forEach>
+		</table>
+   </div>   
 </body>
 </html>

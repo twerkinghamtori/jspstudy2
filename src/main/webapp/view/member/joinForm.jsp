@@ -39,6 +39,17 @@
         	open(path+"?id="+id, "", op);
     	}    	
     }
+    function win_open1(path) {    	
+    	let email = document.f.email.value;
+    	if(id == "") {
+    		alert("아이디를 입력하세요.");
+    		f.id.focus();
+    		return;
+    	} else {
+    		let op = "width=500, height=200, left=50, top=150";
+        	open(path+"?email="+email, "", op);
+    	}    	
+    }
 </script>
 </head>
 <body>
@@ -82,6 +93,7 @@
       
       <div class="form-group">
          <label for="email">이메일</label>
+         <button type="button" class="btn btn-dark float-right" onclick="win_open1('emailchk')">이메일 인증 번호 받기</button><br>
          <input type="text" class="form-control" name="email" id="email">
       </div>       
       

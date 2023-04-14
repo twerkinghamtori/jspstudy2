@@ -195,4 +195,37 @@ public class MemberDao {
     	 }
     	 return false;
      }
+     
+     public List<Member> selectEmail(String[] ids) {
+    	 Connection con = DBConnection.getConnection();
+    	 PreparedStatement pstmt = null;
+    	 ResultSet rs = null;
+    	 StringBuilder sb = new StringBuilder();
+    	 for(int i=0; i<ids.length; i++) {
+    		 sb.append("'" + ids[i]+( (i<ids.length-1) ? "'," : "'" )); // 'test1', 'admin' (마지막에 , 안붙이려고)
+    	 }
+    	 List<Member> list = new ArrayList<>();
+    	 String sql = "select * from member where id in (" + sb.toString() +")"; // in은 목록에 해당하는거 있는지 
+    	 try {
+    		 pstmt=con.prepareStatement(sql);
+    		 rs=pstmt.executeQuery();
+    		 while(rs.next()) {
+    			 Member m = new Member();
+    			 m.setId(rs.getString("id"));
+    			 m.setPass(rs.getString("pass"));
+    			 m.setName(rs.getString("name"));
+    			 m.setGender(rs.getInt("gender"));
+    			 m.setTel(rs.getString("tel"));
+    			 m.setEmail(rs.getString("email"));
+    			 m.setPicture(rs.getString("picture")); 
+    			 list.add(m);
+    		 }
+    		 return list;
+    	 } catch(SQLException e) {
+    		 e.printStackTrace();
+    	 } finally {
+    		 DBConnection.close(con,pstmt, null);
+    	 }
+    	 return null;
+     }
 }
