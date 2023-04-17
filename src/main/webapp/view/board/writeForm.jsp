@@ -53,7 +53,8 @@
       
       <tr>
          <td>내용</td>
-         <td><textarea rows="15" name="content" class="w3-input"></textarea></td>
+         <td><textarea rows="15" name="content" class="w3-input" id="content"></textarea></td>
+         <script>CKEDITOR.replace("content")</script>
       </tr>
       
       <tr>
