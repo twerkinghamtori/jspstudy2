@@ -54,14 +54,15 @@
 					<td>
 						<select name="mtype" class="form-control">
 							<option value="text/html;charset=utf-8">HTML
-							<option value="text/plain;charset=utf-8">TEXT
+							<option value="text/plain;charset=utf-8">TEXT <%--순수 문자로 인식해서 html 태그도 나옴 --%>
 						</select>
 					</td>
 				</tr>
 				
 				<tr>
 					<td colspan="2">
-						<textarea name="content" cols="40" rows="10" class="form-control"></textarea>
+						<textarea name="content" cols="40" rows="10" class="form-control" id="content"></textarea>
+						<script>CKEDITOR.replace("content")</script>
 					</td>
 				</tr>
 				

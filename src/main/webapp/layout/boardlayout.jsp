@@ -69,10 +69,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <hr>
   <div class="w3-bar-block" onclick="colorchange()">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
-    <a href="${path }/member/main" class="w3-bar-item w3-button w3-padding"  onclick="colorchange()" id="menu"><i class="fa fa-users fa-fw"></i>&nbsp; 마이페이지</a>
-    <a href="${path }/board/list?boardid=1" class="w3-bar-item w3-button w3-padding" onclick="colorchange()" id="menu"><i class="fa fa-eye fa-fw"></i>&nbsp; 공지사항</a>
-    <a href="${path }/board/list?boardid=2" class="w3-bar-item w3-button w3-padding" onclick="colorchange()" id="menu"><i class="fa fa-users fa-fw"></i>&nbsp; 자유게시판</a>
-    <a href="${path }/board/list?boardid=3" class="w3-bar-item w3-button w3-padding" onclick="colorchange()" id="menu"><i class="fa fa-bullseye fa-fw"></i>&nbsp; QnA</a>
+    <a href="${path }/member/main" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>&nbsp; 마이페이지</a>
+    <a href="${path }/board/list?boardid=1" class="w3-bar-item w3-button w3-padding  <c:if test='${empty boardid || boardid==1 }'>w3-blue</c:if>"><i class="fa fa-eye fa-fw"></i>&nbsp; 공지사항</a>
+    <a href="${path }/board/list?boardid=2" class="w3-bar-item w3-button w3-padding <c:if test='${boardid==2 }'>w3-blue</c:if>"><i class="fa fa-users fa-fw"></i>&nbsp; 자유게시판</a>
+    <a href="${path }/board/list?boardid=3" class="w3-bar-item w3-button w3-padding <c:if test='${boardid==3 }'>w3-blue</c:if>"><i class="fa fa-bullseye fa-fw"></i>&nbsp; QnA</a>
   </div>
 </nav>
 

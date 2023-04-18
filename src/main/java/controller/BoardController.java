@@ -18,10 +18,13 @@ import gdu.mskim.MskimRequestMapping;
 import gdu.mskim.RequestMapping;
 import model.Board;
 import model.BoardDao;
+import model.Comment;
+import model.CommentDao;
 //http://localhost:8080/jspstudy2/board/info?num=1 
 @WebServlet(urlPatterns= {"/board/*"}, initParams= {@WebInitParam(name="view", value="/view/")})
 public class BoardController extends MskimRequestMapping {
 	private BoardDao dao = new BoardDao();
+	private CommentDao cdao = new CommentDao();
 	
 	public String loginAdminCheck(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		request.setCharacterEncoding("UTF-8");
@@ -150,12 +153,17 @@ public class BoardController extends MskimRequestMapping {
 		   if(boardid==null) boardid="1";
 		   
 		   Board b = dao.selectOne(num);
+		   String readcnt = request.getParameter("readcnt");
 		   
-		   dao.readcntAdd(num);
+		   if(readcnt==null || !readcnt.equals("f")) {
+			   dao.readcntAdd(num);
+		   }		   
 		   
 		   request.setAttribute("b", b);
 		   request.setAttribute("boardid", boardid);
 		   
+		   List<Comment> commlist = cdao.list(num);
+		   request.setAttribute("commlist", commlist);
 		return "board/info";
 	}
 	
@@ -356,4 +364,60 @@ public class BoardController extends MskimRequestMapping {
 			return "alert";
 		}
 	}
+	
+	@RequestMapping("imgupload")
+	public String imgupload(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String path = request.getServletContext().getRealPath("/") + "/upload/imgfile";
+		File f = new File(path);
+		if(!f.exists()) f.mkdirs();
+		MultipartRequest multi = null;
+		try {
+			multi = new MultipartRequest(request, path, 10*1024*1024, "UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String fileName = multi.getFilesystemName("upload"); //ckeditor가 전달해줌 upload라는 이름으로. 파일 전송할 때 파라미터 이름이 upload인거임
+//		System.out.println(fileName); //dochi.jsp
+		request.setAttribute("fileName", fileName);
+		return "ckeditor"; //view밑에
+	}
+	
+	@RequestMapping("comment")
+	public String comment(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		int num = Integer.parseInt(request.getParameter("num"));
+		String url = "info?num="+num+"&readcnt=f";
+		Comment cmt = new Comment();
+		cmt.setNum(num);
+		cmt.setContent(request.getParameter("content"));
+		cmt.setWriter(request.getParameter("writer"));
+		int seq = cdao.maxseq(num);
+//		cmt.setSeq(++seq); //url 실행될 때마다 증가. dao에서 처리하는 거 아님. controller에서 해야함.
+		cmt.setSeq(seq+1); 
+		if(cdao.insert(cmt)) {
+			return "redirect:"+url;
+		}
+		request.setAttribute("msg", "답글 등록시 오류 발생");
+		request.setAttribute("url", url);
+		return "alert";
+	}
+	
+	@RequestMapping("commdel")
+	public String commdel(HttpServletRequest request, HttpServletResponse response) {
+		int num = Integer.parseInt(request.getParameter("num"));
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		String url = "info?num="+num + "&readcnt=f";
+		if(cdao.delete(num,seq)) {
+			return "redirect:"+url;
+		}
+		request.setAttribute("msg", "답글 삭제 시 오류 발생");
+		request.setAttribute("url", url);
+		return "alert";
+	}
+	
 }

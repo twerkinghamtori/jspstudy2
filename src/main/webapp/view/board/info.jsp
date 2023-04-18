@@ -66,6 +66,44 @@
          </td>
       </tr>
    </table>
+   
+   <%--댓글 등록 및 조회 --%>
+   <span id="comment"></span>
+   <form action="comment" method="post">
+   		<input type="hidden" name="num" value="${b.num }">
+   		<div class="w3-row">
+   			<div class="w3-col s2 w3-center">
+   				<p><input type="text" name="writer" class="w3-input w3-border"></p>
+   			</div>
+   			<div class="w3-col s9 w3-center">
+   				<p><input type="text" name="content" class="w3-input w3-border"></p>
+   			</div>
+   			<div class="w3-col s1 w3-center">
+   				<p><button type="submit" class="w3-btn w3-border">댓글등록</button>
+   			</div>
+   		</div>
+   </form>
+   <div class="w3-container">
+   		<table class="w3-table-all">
+   			<c:if test="${!empty commlist }">
+   			<tr>
+   				<th>번호</th>
+   				<th>작성자</th>
+   				<th>내용</th>
+   			</tr>
+   			</c:if>
+   			<c:forEach var="c" items="${commlist }">
+   				<tr>
+   					<td>${c.seq }</td>
+   					<td>${c.writer}</td>
+   					<td>${c.content }</td>
+   					<td class="w3-right">
+   						<a class="w3-btn w3-border" href="commdel?num=${param.num }&seq=${c.seq}">삭제</a>
+   					</td>
+   				</tr>
+   			</c:forEach>
+   		</table>
+   </div>
 </div>
 </body>
 </html>

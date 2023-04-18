@@ -35,37 +35,31 @@
           <td>${boardnum }</td>
           <c:set var="boardnum" value="${boardnum-1 }" />
           
-          <!-- 제목 : 수정 필요. -->
-          <c:if test="${empty b.file1 }">           
+          <!-- 제목  -->
           <td style="text-align:left">
+          	<c:if test="${empty b.file1 }">
+          		 &nbsp;&nbsp;&nbsp;
+          	</c:if>
+          	<c:if test="${!empty b.file1 }">
+          		<a href="../upload/board/${b.file1 }">@</a>
+          	</c:if>
+          	
           	<c:if test="${b.grplevel > 0 }">
           		<c:forEach var="i" begin="1" end="${b.grplevel }">
                         &nbsp;&nbsp;	
                  </c:forEach>
-             &nbsp;&nbsp;&nbsp; └<a href="info?num=${b.num }">${b.title }</a>
-             </c:if>
-             <c:if test="${b.grplevel <=0 }">
-             &nbsp;&nbsp;&nbsp; <a href="info?num=${b.num }">${b.title }</a>
-             </c:if>
+                 └
+          	</c:if>
+          	
+          	<a href="info?num=${b.num }">${b.title }</a>
+          	
+          	<c:if test="${b.commcnt >0 }">
+             	<a href="info?num=${b.num }#comment">
+             		<span class="w3-badge w3-blue w3-tiny">${b.commcnt }</span>
+             	</a>
+          	</c:if>
           </td>
-          </c:if>
-          <c:if test="${!empty b.file1 }">
-              <td style="text-align:left"> 
-              	<c:if test="${b.grplevel > 0 }">
-          			<c:forEach var="i" begin="1" end="${b.grplevel }">
-                        &nbsp;&nbsp;	
-                 	</c:forEach>
-             		&nbsp;&nbsp;&nbsp; └<a href="info?num=${b.num }">${b.title }</a>
-             	</c:if>
-             	<c:if test="${b.grplevel <=0 }">
-             		&nbsp;&nbsp;&nbsp; 
-             		<a href="upload/board/${b.file1 }">@</a> 
-                 	<a href="info?num=${b.num }">${b.title }</a>
-             	</c:if>        
-                 
-              </td>
-          </c:if>
-          
+
           <!-- 작성자 -->
           <td>${b.writer }</td>
           

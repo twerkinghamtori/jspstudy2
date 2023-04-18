@@ -15,6 +15,7 @@ public class Board {
 	private int grp;
 	private int grplevel;
 	private int grpstep;
+	private int commcnt; //db에 없지만 댓글 수를 저장하기 위한 공간.
 	
 	public int getNum() {
 		return num;
@@ -93,5 +94,11 @@ public class Board {
 		return "[num=" + num + ", writer=" + writer + ", pass=" + pass + ", title=" + title + ", content="
 				+ content + ", file1=" + file1 + ", boardid=" + boardid + ", regdate=" + regdate + ", readcnt="
 				+ readcnt + ", grp=" + grp + ", grplevel=" + grplevel + ", grpstep=" + grpstep + "]";
+	}
+	public int getCommcnt() {
+		return commcnt;
+	}
+	public void setCommcnt(int commcnt) {
+		this.commcnt = commcnt;
 	}
 }

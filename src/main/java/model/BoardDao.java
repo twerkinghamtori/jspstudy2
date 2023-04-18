@@ -77,7 +77,7 @@ public class BoardDao {
     	ResultSet rs = null;
     	List<Board> list = new ArrayList<Board>();
     	// limit 시작레코드번호, 개수 : 오라클에서는 사용 불가. substring 같은 거구만..ㅎㅅㅎ
-    	String sql = "select * from board where boardid=? order by grp desc, grpstep asc limit ?,?"; //grp desc, grpstep asc(답글 출력 순서)
+    	String sql = "SELECT * ,(SELECT COUNT(*) FROM comment c WHERE c.num=b.num) commcnt FROM board b WHERE boardid=? ORDER BY grp DESC, grpstep ASC limit ?,?"; //grp desc, grpstep asc(답글 출력 순서)
     	try {
     		pstmt=con.prepareStatement(sql);
     		pstmt.setString(1, boardid);
@@ -97,7 +97,8 @@ public class BoardDao {
     			b.setReadcnt(rs.getInt("readcnt"));
     			b.setGrp(rs.getInt("grp"));
     			b.setGrplevel(rs.getInt("grplevel"));
-    			b.setGrpstep(rs.getInt("grpstep"));  			
+    			b.setGrpstep(rs.getInt("grpstep"));  		
+    			b.setCommcnt(rs.getInt("commcnt"));
     			list.add(b);
     		}
     		return list;    		

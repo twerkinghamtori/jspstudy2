@@ -37,7 +37,10 @@
          
          <tr>
             <th>내용</th>
-            <td><textarea name="content" rows="15" class="w3-input"></textarea></td>
+            <td><textarea name="content" rows="15" class="w3-input" id="content"></textarea></td>
+            <script>CKEDITOR.replace("content", {
+        	 	filebrowserImageUploadUrl : "imgupload" 
+         	})</script>
          </tr>
          
          <tr>

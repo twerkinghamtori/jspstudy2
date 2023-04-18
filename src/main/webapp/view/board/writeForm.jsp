@@ -23,11 +23,11 @@
 		   f.title.focus();
 		   return;
 	   }
-	   if(f.content.value=="") {
-		   alert("내용을 입력하세요.")
-		   f.content.focus();
-		   return;
-	   }
+//	   if(f.content.value=="") { //CKEditor로 대체 => content.value=""로 봄
+//		   alert("내용을 입력하세요.")
+//		   f.content.focus();
+//		   return;
+//	   }
 	   f.submit(); //submit 발생 => form의 action 페이지로 요청을 해주는 기능.(submit버튼이 따로 없으니까.)
    }
 </script>
@@ -54,7 +54,9 @@
       <tr>
          <td>내용</td>
          <td><textarea rows="15" name="content" class="w3-input" id="content"></textarea></td>
-         <script>CKEDITOR.replace("content")</script>
+         <script>CKEDITOR.replace("content", {
+        	 filebrowserImageUploadUrl : "imgupload" //ckeditor한테 파일 위치 알려줘서 src만들 수 있게. url="/board/imgupload" => controller
+         })</script>
       </tr>
       
       <tr>
