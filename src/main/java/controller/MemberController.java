@@ -32,12 +32,13 @@ import gdu.mskim.MskimRequestMapping;
 import gdu.mskim.RequestMapping;
 import model.Member;
 import model.MemberDao;
+import model.MemberMybatisDao;
 //url에 pictureForm 들어오면 mskim에서 자동으로 view/pictureForm.jsp 로 맵핑해줌. pictureForm.jsp가 왜 자동으로 뜨지? mskim 이 해줌~
 
 @WebServlet(urlPatterns= {"/member/*"}, //http://localhost:8080/jspstudy2/member/이후의 어떤 요청이 들어와도 MemberController 서블릿이 호출됨.(URL 경로를 매핑)
               initParams= {@WebInitParam(name="view", value="/view/")}) //view="/view/" 요청정보 (초기 파라미터) 상위 폴더를 설정. return 값 앞에 붙게됨. View의 위치를 설정.
 public class MemberController extends MskimRequestMapping { //MskimRequestMapping = 서블릿(HttpServlet을 상속받은 클래스)
-	private MemberDao dao = new MemberDao();
+	private MemberMybatisDao dao = new MemberMybatisDao();
 	//로그인 검증, id파라미터와 로그인 정보를 검증해주는 함수
 	public String loginIdCheck(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException { // @MSLogin annotation에 있는 거랑 이름 똑같아야함.
 		request.setCharacterEncoding("UTF-8");
