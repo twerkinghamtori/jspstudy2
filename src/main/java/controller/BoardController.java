@@ -17,13 +17,13 @@ import gdu.mskim.MSLogin;
 import gdu.mskim.MskimRequestMapping;
 import gdu.mskim.RequestMapping;
 import model.Board;
-import model.BoardDao;
+import model.BoardMybatisDao;
 import model.Comment;
 import model.CommentDao;
 //http://localhost:8080/jspstudy2/board/info?num=1 
 @WebServlet(urlPatterns= {"/board/*"}, initParams= {@WebInitParam(name="view", value="/view/")})
 public class BoardController extends MskimRequestMapping {
-	private BoardDao dao = new BoardDao();
+	private BoardMybatisDao dao = new BoardMybatisDao();
 	private CommentDao cdao = new CommentDao();
 	
 	public String loginAdminCheck(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
@@ -97,6 +97,8 @@ public class BoardController extends MskimRequestMapping {
 	     3.db에서 해당 페이지에 출력될 내용을 조회하여 화면에 출력. 
 	               게시물을 출력하는 부분. 
 	               페이지 구분 출력 부분.*/
+		 request.setCharacterEncoding("UTF-8");
+		 
 		 if(request.getParameter("boardid") != null) { 
 			   request.getSession().setAttribute("boardid", request.getParameter("boardid"));
 			   request.getSession().setAttribute("pageNum","1");
@@ -108,11 +110,22 @@ public class BoardController extends MskimRequestMapping {
 		   try {
 			   pageNum = Integer.parseInt(request.getParameter("pageNum")); //pageNum에 오류가 나도(null or "a" 등등) 1로 인식하겠음.
 		   } catch(NumberFormatException e) {}
+		   String column = request.getParameter("column");
+		   String find = request.getParameter("find");
 		   
+		   //검색 파트
+		   //column, find 파라미터 중 한개만 존재하는 경우 두개의 파라미터 값은 없는 것으로 설정.
+		   if(column==null || column.trim().equals("")) { //선택하세요 일때 column value=""
+			   column=null;
+			   find=null;
+		   }
+		   if(find==null || find.trim().equals("")) {
+			   column=null;
+			   find=null;
+		   }
 		   int limit=10;
-		   BoardDao dao = new BoardDao();
-		   int boardcount = dao.boardCount(boardid); //boardCount = "게시판 종류별" 전체 등록 게시물 건수 => maxNum()은 삭제되거나 다른 boardid일떄 안되니까.
-		   List<Board> list = dao.list(boardid, pageNum, limit);
+		   int boardcount = dao.boardCount(boardid, column, find); //boardCount = "게시판 종류별" 전체 등록 게시물 건수 => maxNum()은 삭제되거나 다른 boardid일떄 안되니까.
+		   List<Board> list = dao.list(boardid, pageNum, limit, column, find);
 		   
 		   //페이징 부분 시작.
 		   int maxpage = (int)((double)boardcount/limit + 0.95);
@@ -272,7 +285,7 @@ public class BoardController extends MskimRequestMapping {
 		String path = request.getServletContext().getRealPath("/") + "/upload/board";
 		File f = new File(path);
 		if(!f.exists()) f.mkdirs();
-		System.out.println(path);
+//		System.out.println(path);
 		
 		MultipartRequest multi = new MultipartRequest(request, path, 10*1024*1024, "UTF-8");
 		b.setNum(Integer.parseInt(multi.getParameter("num")));
