@@ -5,12 +5,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import gdu.mskim.MskimRequestMapping;
 import gdu.mskim.RequestMapping;
@@ -73,5 +79,35 @@ public class AjaxController extends MskimRequestMapping {
 		request.setAttribute("list",new ArrayList<String>(set));
 		request.setAttribute("length", set.size());
 		return "ajax/select";
+	}
+	
+	@RequestMapping("exchange")
+	public String exchange(HttpServletRequest request, HttpServletResponse response) {
+		Document doc = null;
+		List<List<String>> trlist = new ArrayList<>();
+		String url = "https://www.koreaexim.go.kr/wg/HPHKWG057M01";
+		String exdate = null;
+		try {
+			doc = Jsoup.connect(url).get();
+			Elements trs = doc.select("tr");
+			exdate = doc.select("p.table-unit").html(); //조회기준일	
+			for(Element tr : trs) {
+				List<String> tdlist = new ArrayList<String>();
+				Elements tds = tr.select("td");
+				for(Element td : tds) {
+					tdlist.add(td.html());
+				}
+				if(tdlist.size()>0) {
+					if(tdlist.get(0).equals("EUR") || tdlist.get(0).equals("JPY(100)") || tdlist.get(0).equals("CNH") || tdlist.get(0).equals("USD")) {
+						trlist.add(tdlist);
+					}
+				}				
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("date", exdate);
+		request.setAttribute("list", trlist);
+		return "ajax/exchange";
 	}
 }

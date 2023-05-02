@@ -74,6 +74,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="${path }/board/list?boardid=2" class="w3-bar-item w3-button w3-padding <c:if test='${boardid==2 }'>w3-blue</c:if>"><i class="fa fa-users fa-fw"></i>&nbsp; 자유게시판</a>
     <a href="${path }/board/list?boardid=3" class="w3-bar-item w3-button w3-padding <c:if test='${boardid==3 }'>w3-blue</c:if>"><i class="fa fa-bullseye fa-fw"></i>&nbsp; QnA</a>
   </div>
+  <%--ajax를 이용하여 환율 정보 출력 --%>
+  <div class="w3-container">
+  	<div id="exchange"></div>
+  </div>
 </nav>
 
 
@@ -148,6 +152,10 @@ function w3_close() {
 
 <script type="text/javascript">
 	$(function() {
+		//ajax를 이용하여 환율 데이터 조회하기
+		exchangeRate();
+		
+		//ajax를 이용하여 지역 데이터를 조회하기
 		let divid;
 		let si;
 		$.ajax({
@@ -201,6 +209,16 @@ function w3_close() {
 			},
 			error : function(e) {
 				alert(e.status)
+			}
+		})
+	}
+	function exchangeRate() {
+		$.ajax("${path}/ajax/exchange", {
+			success : function(data) {
+				$("#exchange").html(data)
+			},
+			error : function(e) {
+				alert("환율조회"+e.status)
 			}
 		})
 	}
