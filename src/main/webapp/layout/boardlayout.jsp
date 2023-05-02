@@ -152,10 +152,12 @@ function w3_close() {
 		let si;
 		$.ajax({
 			url : "${path}/ajax/select",
-			success : function(arr) {
+			success : function(data) {
+				let arr = JSON.parse(data)
 				$.each(arr,function(i,item){
+					//select[..] 선택자
 					$("select[name=si]").append(function() {
-						return "<option>" +item +"</option>
+						return "<option>" +item +"</option>"
 					})
 				})
 			},
@@ -164,6 +166,44 @@ function w3_close() {
 			}
 		})
 	})
-</script>
+	function getText(name) { //name= si || gu
+		let city = $("select[name='si']").val()
+		let gun = $("select[name='gu']").val()
+		let disname
+		let toptext = '구/군을 선택하세요'
+		let params=''
+		if(name=='si') {
+			params = "si=" + city.trim()
+			disname = "gu"
+		} else if(name=='gu') {
+			params = "si=" + city.trim() + "&gu=" + gun.trim()
+			disname = "dong"
+			toptext = '동/리를 선택하세요'
+		} else {
+			return;
+		}
+		$.ajax({
+			url : "${path}/ajax/select",
+			type : "POST",
+			data : params,
+			success : function(data) {
+				console.log(data)
+				let arr = JSON.parse(data)
+				$("select[name=" + disname + "] option").remove()
+				$("select[name=" + disname + "]").append(function(){
+					return "<option>" + toptext + "</option>"
+				})
+				$.each(arr, function(i,item){
+					$("select[name=" + disname + "]").append(function(){
+						return "<option>" + item + "</option>"
+					})
+				})
+			},
+			error : function(e) {
+				alert(e.status)
+			}
+		})
+	}
+</script> 
 </body>
 </html>
