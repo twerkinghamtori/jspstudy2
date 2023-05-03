@@ -39,7 +39,7 @@
       </div>
       
       <div id="center" style="padding:3px;">
-         <button type="submit" class="btn btn-dark">로그인</button>  
+         <button type="submit" class="btn btn-dark" id="login">로그인</button>  
          <button type="button"  onclick="win_open('idForm')" class="btn btn-dark">아이디찾기</button>
          <button type="button"  onclick="win_open('pwForm')" class="btn btn-dark">비밀번호찾기</button>       
       </div>

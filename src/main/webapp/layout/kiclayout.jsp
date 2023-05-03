@@ -34,7 +34,7 @@
 	<nav class="navbar navbar-expand-sm bg-light navbar-light">
 		<!-- Brand -->
 		<a class="navbar-brand" href="#">
-		<img src="${path}/image/dochi.jpg" width="25%"></a>
+		<img src="${path}/image/dotest.jpg" width="50%"></a>
 
 		<!-- Links -->
 		<ul class="navbar-nav ">
