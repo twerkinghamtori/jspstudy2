@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.annotation.WebInitParam;
@@ -20,6 +21,7 @@ import org.jsoup.select.Elements;
 
 import gdu.mskim.MskimRequestMapping;
 import gdu.mskim.RequestMapping;
+import model.BoardMybatisDao;
 
 @WebServlet(urlPatterns= {"/ajax/*"}, initParams= {@WebInitParam(name="view", value="/view/")})
 public class AjaxController extends MskimRequestMapping {
@@ -109,5 +111,51 @@ public class AjaxController extends MskimRequestMapping {
 		request.setAttribute("date", exdate);
 		request.setAttribute("list", trlist);
 		return "ajax/exchange";
+	}
+	
+	@RequestMapping("graph1")
+	public String graph1(HttpServletRequest request, HttpServletResponse response) {
+		BoardMybatisDao dao = new BoardMybatisDao();
+		List<Map<String, Object>> list = dao.boardgraph(); //list = [{writer=hamtori, cnt=2},..]
+		StringBuilder json = new StringBuilder("["); //data를 json 형태로 만듦
+		int i=0;
+		for(Map<String, Object> m : list) {
+			for(Map.Entry<String, Object> me : m.entrySet()) {
+				if(me.getKey().equals("cnt")) {
+					json.append("{\"cnt\":" + me.getValue() + ","); // \" => literally "
+				}
+				if(me.getKey().equals("writer")) {
+					json.append("\"writer\":\"" + me.getValue() + "\"}");
+				}
+			}
+			i++;
+			if(i < list.size()) json.append(",");			
+		}
+		json.append("]");
+		request.setAttribute("json", json.toString().trim());
+		return "ajax/graph1";
+	}
+	
+	@RequestMapping("graph2")
+	public String graph2(HttpServletRequest request, HttpServletResponse response) {
+		BoardMybatisDao dao = new BoardMybatisDao();
+		List<Map<String, Object>> list = dao.boardgraph2(); 
+		StringBuilder json = new StringBuilder("["); 
+		int i=0;
+		for(Map<String, Object> m : list) {
+			for(Map.Entry<String, Object> me : m.entrySet()) {
+				if(me.getKey().equals("d")) {
+					json.append("{\"regdate\":\"" + me.getValue() + "\","); 
+				}
+				if(me.getKey().equals("cnt")) {
+					json.append("\"cnt\":" + me.getValue() + "}");
+				}
+			}
+			i++;
+			if(i < list.size()) json.append(",");			
+		}
+		json.append("]");
+		request.setAttribute("json", json.toString().trim());
+		return "ajax/graph2";
 	}
 }

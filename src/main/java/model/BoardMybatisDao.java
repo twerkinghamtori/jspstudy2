@@ -79,7 +79,7 @@ public class BoardMybatisDao {
     			case 1 : map.put("cols1", cols[0].trim());
     			}
     			map.put("cols", cols);
-        		map.put("find", find);
+        		map.put("find", "%" + find + "%");
     		}   		
     		return session.getMapper(cls).selectList(map);    		
     	} catch(Exception e) {
@@ -151,4 +151,29 @@ public class BoardMybatisDao {
     	}
     	return false;
     }
+
+	public List<Map<String, Object>> boardgraph() {
+		SqlSession session = MybatisConnection.getConnection();
+		List<Map<String, Object>> list = null;
+    	try {
+    		list = session.getMapper(cls).graph();
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		MybatisConnection.close(session);
+    	}
+		return list;
+	}
+
+	public List<Map<String, Object>> boardgraph2() {
+		SqlSession session = MybatisConnection.getConnection();
+    	try {
+    		return session.getMapper(cls).graph2();
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		MybatisConnection.close(session);
+    	}
+    	return null;
+	}
 }

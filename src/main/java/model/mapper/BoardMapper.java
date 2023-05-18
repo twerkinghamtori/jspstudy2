@@ -43,7 +43,7 @@ public interface BoardMapper {
 //		"</if>",
 		
 		"<if test='column != null'>",
-		"<if test='cols1!=null'> and (${cols1} like '%${find}%' </if>",
+		"<if test='cols1!=null'> and (${cols1} like #{find} </if>",
 		"<if test='cols2==null'> ) </if>",
 		"<if test='cols2!=null'> or ${cols2} like '%${find}%' </if>",
 		"<if test='cols2 != null and cols3==null'> ) </if>",
@@ -70,6 +70,12 @@ public interface BoardMapper {
 
 	@Delete("delete from board where num=#{value}")
 	int delete(int num);
+
+	@Select("SELECT writer, COUNT(*) cnt FROM board GROUP BY writer having count(*) > 1 ORDER BY cnt desc")
+	List<Map<String, Object>> graph();
+
+	@Select("SELECT date_format(regdate,'%Y-%m-%d') d, COUNT(*) cnt FROM board GROUP BY d ORDER BY d DESC LIMIT 7")
+	List<Map<String, Object>> graph2();
 	
 	
 	

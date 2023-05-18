@@ -15,8 +15,8 @@
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
-<script type="text/javascript" src="http://cdn.ckeditor.com/4.5.7/full/ckeditor.js">	
-</script>
+<script type="text/javascript" src="http://cdn.ckeditor.com/4.5.7/full/ckeditor.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <script type="text/javascript">
 	function colorchange() {
 		let x = document.getElementById("menu");
@@ -92,6 +92,23 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5><b><i class="fa fa-dashboard"></i>공공데이터 융합 자바/스프링 개발자 과정(GDJ 62)</b></h5>
   </header> 
   
+  <div class="w3-row-padding w3-margin-bottom">
+  	<div class="w3-half">
+  		<div class="w3-container w3-padding-16">
+  			<div id="piecontainer" style="width:80%; border:1px solid #ffffff;">
+  				<canvas id="canvas1" style="width:100%"></canvas>
+  			</div>
+  		</div>
+  	</div>
+  	<div class="w3-half">
+  		<div class="w3-container w3-padding-16">
+  			<div id="barcontainer" style="width:80%; border:1px solid #ffffff;">
+  				<canvas id="canvas2" style="width:100%"></canvas>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+  
   <div class="w3-panel">
   	<sitemesh:write property="body"/>
   </div>
@@ -151,7 +168,20 @@ function w3_close() {
 </script>
 
 <script type="text/javascript">
+	let randomColorFactor = function() {
+		return Math.round(Math.random()*225)
+	}
+	let randomColor = function(opacity) { 
+		return "rgba(" + randomColorFactor() + "," + randomColorFactor() + "," + randomColorFactor() + "," + (opacity || '.3') + ")"
+	}
+	
 	$(function() {
+		//작성자 별 게시물 건수
+		piegraph();
+		
+		//최근 게시물 그래프
+		bargraph(); 
+		
 		//ajax를 이용하여 환율 데이터 조회하기
 		exchangeRate();
 		
@@ -221,6 +251,112 @@ function w3_close() {
 				alert("환율조회"+e.status)
 			}
 		})
+	}
+	function piegraph() {
+		$.ajax("${path}/ajax/graph1", {
+			success : function(data) {
+				pieGraphPrint(data);
+			},
+			error : function(e) {
+				alert("파이 그래프" + e.status)
+			}
+		})
+	}
+	function pieGraphPrint(data) {
+		console.log(data); //[{writer : '이름1', cnt : 갯수},...]
+		let rows = JSON.parse(data);
+		let writers = []; //x축의 내용 => labels로 들어감
+		let datas = [];
+		let colors = [];
+		$.each(rows, function(i,item) {
+			writers[i] = item.writer;
+			datas[i] = item.cnt;
+			colors[i] = randomColor(1);
+		})
+		let config = {
+			type : 'pie',
+			data : {
+				datasets : [{
+					data : datas,
+					backgroundColor : colors
+				}],
+				labels : writers
+			},
+			options : {
+				responsive : true,
+				legend : {position : 'top'},
+				title : {
+					display : true,
+					text : '게시물 작성자별 등록 건수',
+					position : "bottom"
+				}
+			}
+		}
+		let ctx = document.getElementById("canvas1").getContext("2d")
+		new Chart(ctx,config)
+	}
+	function bargraph() {
+		$.ajax("${path}/ajax/graph2", {
+			success : function(data) {
+				barGraphPrint(data);
+			},
+			error : function(e) {
+				alert("바 그래프" + e.status)
+			}
+		})
+	}
+	function barGraphPrint(data) {
+		console.log(data); 
+		let rows = JSON.parse(data);
+		let regdates = []; 
+		let datas = [];
+		let colors = [];
+		$.each(rows, function(i,item) {
+			regdates[i] = item.regdate;
+			datas[i] = item.cnt;
+			colors[i] = randomColor(1);
+		})
+		let chartData = {
+			labels : regdates,
+			datasets : [{
+				type : 'line',
+				borderWidth : 2,
+				borderColor : colors,
+				label : '건수',
+				fill : false,
+				data : datas
+			},{
+				type : 'bar',
+				backgroundColor : colors,
+				label : '건수',
+				data : datas
+			}]
+		}
+		let config = {
+			type : 'bar',
+			data : chartData,
+			options : {
+				responsive : true,
+				title : {
+					display : true,
+					text : '최근 7일 게시판 등록 건수',
+					position : 'bottom'
+				},
+				legend : {display : false},
+				scales : {
+					xAxes : [{
+						display : true,
+						stacked : true
+					}],
+					yAxes : [{
+						display : true,
+						stacked : true
+					}]
+				}
+			}
+		}
+		let ctx = document.getElementById("canvas2").getContext("2d")
+		new Chart(ctx,config)
 	}
 </script> 
 </body>
